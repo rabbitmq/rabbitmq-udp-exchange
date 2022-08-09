@@ -2,10 +2,10 @@
 %%  License, v. 2.0. If a copy of the MPL was not distributed with this
 %%  file, You can obtain one at http://mozilla.org/MPL/2.0/.
 %%
--module(udp_exchange_stomp_packet).
+-module(rabbit_udp_exchange_stomp_packet).
 -include_lib("rabbit_common/include/rabbit.hrl").
 -include_lib("rabbit_common/include/rabbit_framing.hrl").
--include("udp_exchange_stomp_frame.hrl").
+-include("rabbit_udp_exchange_stomp_frame.hrl").
 
 -export([configure/1, parse/4, format/6]).
 

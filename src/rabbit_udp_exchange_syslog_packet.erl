@@ -19,7 +19,7 @@
 %% user headers of the messages.
 %%
 
--module(udp_exchange_syslog_packet).
+-module(rabbit_udp_exchange_syslog_packet).
 -include_lib("rabbit_common/include/rabbit.hrl").
 
 -export([configure/1, parse/4, format/6]).

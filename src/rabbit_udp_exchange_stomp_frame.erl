@@ -22,7 +22,7 @@
 
 -module(rabbit_udp_exchange_stomp_frame).
 
--include("udp_exchange_stomp_frame.hrl").
+-include("rabbit_udp_exchange_stomp_frame.hrl").
 
 -export([parse/2, initial_state/0]).
 -export([header/2, header/3,

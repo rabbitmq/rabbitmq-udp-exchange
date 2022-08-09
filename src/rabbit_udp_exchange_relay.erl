@@ -5,7 +5,7 @@
 -module(rabbit_udp_exchange_relay).
 
 -include_lib("rabbit_common/include/rabbit.hrl").
--include("udp_exchange.hrl").
+-include("rabbit_udp_exchange.hrl").
 
 -behaviour(gen_server).
 
