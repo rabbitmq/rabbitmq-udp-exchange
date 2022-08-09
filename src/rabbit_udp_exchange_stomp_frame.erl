@@ -20,7 +20,7 @@
 %% stomp_frame implements the STOMP framing protocol "version 1.0", as
 %% per http://stomp.codehaus.org/Protocol
 
--module(udp_exchange_stomp_frame).
+-module(rabbit_udp_exchange_stomp_frame).
 
 -include("udp_exchange_stomp_frame.hrl").
 

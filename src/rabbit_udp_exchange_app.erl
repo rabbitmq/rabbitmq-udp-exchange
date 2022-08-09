@@ -2,7 +2,7 @@
 %%  License, v. 2.0. If a copy of the MPL was not distributed with this
 %%  file, You can obtain one at http://mozilla.org/MPL/2.0/.
 %%
--module(udp_exchange_app).
+-module(rabbit_udp_exchange_app).
 
 -behaviour(application).
 -export([start/2, stop/1]).

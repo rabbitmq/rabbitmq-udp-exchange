@@ -2,7 +2,7 @@
 %%  License, v. 2.0. If a copy of the MPL was not distributed with this
 %%  file, You can obtain one at http://mozilla.org/MPL/2.0/.
 %%
--module(udp_exchange_raw_packet).
+-module(rabbit_udp_exchange_raw_packet).
 -include_lib("rabbit_common/include/rabbit.hrl").
 
 -export([configure/1, parse/4, format/6]).
@@ -12,7 +12,7 @@ configure(#exchange{}) ->
 
 parse(_IpAddr, _Port, Packet, _Config) ->
     %% FIXME: use more clever end-of-routing key detection
-    {ok, {udp_exchange:truncate_bin(255, Packet),
+    {ok, {rabbit_udp_exchange:truncate_bin(255, Packet),
           [],
           Packet}}.
 

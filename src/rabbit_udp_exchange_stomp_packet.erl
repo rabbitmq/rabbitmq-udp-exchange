@@ -70,7 +70,7 @@ format(IpAddr,
                       RK = string:join([binary_to_list(F) || F <- RoutingKeySuffixes], "."),
                       [{HeaderName, RK}] ++ ContentHeaders
               end,
-    {IpAddr, Port, udp_exchange_stomp_frame:serialize
+    {IpAddr, Port, rabbit_udp_exchange_stomp_frame:serialize
                      (#stomp_frame{command = binary_to_list(CommandBin),
                                    headers = Headers,
                                    body_iolist = Body})}.

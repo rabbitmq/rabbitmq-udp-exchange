@@ -2,7 +2,7 @@
 %%  License, v. 2.0. If a copy of the MPL was not distributed with this
 %%  file, You can obtain one at http://mozilla.org/MPL/2.0/.
 %%
--module(udp_exchange_relay).
+-module(rabbit_udp_exchange_relay).
 
 -include_lib("rabbit_common/include/rabbit.hrl").
 -include("udp_exchange.hrl").
@@ -61,7 +61,7 @@ handle_info({udp, _Socket, SourceIp, SourcePort, Packet},
         ignore ->
             ok;
         {ok, Delivery} ->
-            ok = udp_exchange:deliver(Params#params.exchange_def, Delivery)
+            ok = rabbit_udp_exchange:deliver(Params#params.exchange_def, Delivery)
     end,
     {noreply, State};
 
@@ -111,13 +111,13 @@ udp_delivery(IpAddr = {A, B, C, D},
     case PacketModule:parse(IpAddr, Port, Packet, PacketConfig) of
         {ok, {RoutingKeySuffix, Properties, Body}} ->
             IpStr = list_to_binary(io_lib:format("~p.~p.~p.~p", [A, B, C, D])),
-            RoutingKey = udp_exchange:truncate_bin(
+            RoutingKey = rabbit_udp_exchange:truncate_bin(
                            255, list_to_binary(["ipv4",
                                                 ".", IpStr,
                                                 ".", integer_to_list(Port),
                                                 ".", RoutingKeySuffix])),
-            {ok, rabbit_basic:delivery(false, %% mandatory?
-                                       false, %% should confirm message?
+            {ok, rabbit_basic:delivery(false,
+                                       false,
                                        rabbit_basic:message(XName, RoutingKey, Properties, Body),
                                        undefined)};
         ignore ->

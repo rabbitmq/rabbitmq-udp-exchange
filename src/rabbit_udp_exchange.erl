@@ -2,9 +2,9 @@
 %%  License, v. 2.0. If a copy of the MPL was not distributed with this
 %%  file, You can obtain one at http://mozilla.org/MPL/2.0/.
 %%
--module(udp_exchange).
+-module(rabbit_udp_exchange).
 -include_lib("rabbit_common/include/rabbit.hrl").
--include("udp_exchange.hrl").
+-include("rabbit_udp_exchange.hrl").
 
 -define(EXCHANGE_TYPE_BIN, <<"x-udp">>).
 
@@ -30,18 +30,18 @@
 
 description() ->
     [{name, ?EXCHANGE_TYPE_BIN},
-     {description, <<"Experimental UDP exchange">>}].
+     {description, <<"UDP exchange">>}].
 
 serialise_events() -> false.
 
 %% Called when AMQP clients basic.publish to this exchange.
 route(X, Delivery) ->
-    udp_exchange_sup:ensure_started_local(X) ! Delivery,
+    rabbit_udp_exchange_sup:ensure_started_local(X) ! Delivery,
     [].
 
 %% Called every time this exchange is declared, not just the first.
 validate(X) ->
-    _ = udp_exchange_sup:endpoint_params(X),
+    _ = rabbit_udp_exchange_sup:endpoint_params(X),
     ok.
 
 %% Called BEFORE declaration, to check args etc
@@ -51,14 +51,14 @@ validate_binding(_X, _B) -> ok.
 create(transaction, _X) ->
     ok;
 create(none, X) ->
-    udp_exchange_sup:ensure_started(X),
+    rabbit_udp_exchange_sup:ensure_started(X),
     ok.
 
 %% Called when we're finally deleted.
 delete(transaction, _X, _Bs) ->
     ok;
 delete(none, X, _Bs) ->
-    udp_exchange_sup:stop(X),
+    rabbit_udp_exchange_sup:stop(X),
     ok.
 
 policy_changed(_X1, _X2) -> ok.

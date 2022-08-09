@@ -5,7 +5,7 @@
 -module(udp_exchange_sup).
 
 -include_lib("rabbit_common/include/rabbit.hrl").
--include("udp_exchange.hrl").
+-include("rabbit_udp_exchange.hrl").
 
 -rabbit_boot_step({udp_supervisor,
                    [{description, "UDP supervisor"},
@@ -40,7 +40,7 @@ ensure_started(X) -> multicall(ensure_started_local, X).
 stop(X)           -> multicall(stop_local,           X).
 
 multicall(F, X) ->
-    rpc:multicall(rabbit_mnesia:cluster_nodes(running), ?MODULE, F, [X]).
+    rpc:multicall(rabbit_nodes:all_running(), ?MODULE, F, [X]).
 
 ensure_started_local(X) ->
     #params{process_name = ProcessName} = Params = endpoint_params(X),
@@ -48,7 +48,7 @@ ensure_started_local(X) ->
         undefined ->
             case supervisor:start_child(
                    ?MODULE,
-                   {ProcessName, {udp_exchange_relay, start_link, [Params]},
+                   {ProcessName, {rabbit_udp_exchange_relay, start_link, [Params]},
                     transient, ?MAX_WAIT, worker, [udp_exchange_relay]}) of
                 {ok,              Pid} -> Pid;
                 {already_started, Pid} -> Pid
@@ -108,7 +108,7 @@ endpoint_params(X = #exchange{name = XName, arguments = Args}) ->
         case rabbit_misc:table_lookup(Args, <<"format">>) of
             {longstr, FormatBin} ->
                 FormatStr = binary_to_list(FormatBin),
-                ModuleStr = "udp_exchange_"++FormatStr++"_packet",
+                ModuleStr = "rabbit_udp_exchange_"++FormatStr++"_packet",
                 case code:where_is_file(ModuleStr ++ ".beam") of
                     non_existing ->
                         rabbit_misc:protocol_error
